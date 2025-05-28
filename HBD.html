@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+        }
+        
+        p {
+            color: #555;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .name {
+            font-weight: bold;
+            color: #ff6b6b;
+            font-size: 1.3em;
+        }
+        
+        .btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .btn:hover {
+            background-color: #ff8e8e;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        .cake {
+            font-size: 3em;
+            margin: 20px 0;
+            display: inline-block;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        .confetti {
+            position: fixed; /* Changed from absolute to fixed */
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
+            z-index: 1000; /* Higher z-index to appear above everything */
+            pointer-events: none; /* Allows clicking through confetti */
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .message {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div id="birthday-card">
+            <div class="cake">🎂</div>
+            <h1>Happy Birthday!</h1>
+            <p>This your day Girls</p>
+            <input type="text" id="name-input" placeholder="Insert your name" style="padding: 10px; border: 2px solid #ddd; border-radius: 5px; width: 70%; font-size: 1em;">
+            <br><br>
+            <button class="btn" onclick="showMessage()">Click</button>
+        </div>
+        
+        <div id="personal-message" class="hidden">
+            <div class="cake">🎉</div>
+            <h1>Happy Birthday <span id="name-output" class="name"></span>!</h1>
+            <div class="message">
+                <p>Happy 19th birthday! Keep the spirit on your work program at BEM. Stay strong and stay cool fineshyt!</p>
+                <p>Even though we just met, I hope we can get to know each other better</p>
+                <p>🎈 🎊 🎁</p>
+            </div>
+            <button class="btn" onclick="createConfetti()">press the confetti!</button>
+        </div>
+    </div>
+
+    <script>
+        function showMessage() {
+            const name = document.getElementById('name-input').value.trim();
+            if (name === '') {
+                alert('Insert your name first!');
+                return;
+            }
+            
+            document.getElementById('birthday-card').classList.add('hidden');
+            document.getElementById('personal-message').classList.remove('hidden');
+            document.getElementById('name-output').textContent = name;
+        }
+        
+        function resetCard() {
+            document.getElementById('birthday-card').classList.remove('hidden');
+            document.getElementById('personal-message').classList.add('hidden');
+            document.getElementById('name-input').value = '';
+        }
+        
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ffb347', '#47b8ff', '#8e44ad', '#2ecc71'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Random properties
+                const size = Math.random() * 10 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const x = Math.random() * window.innerWidth;
+                const animationDuration = Math.random() * 3 + 2;
+                
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.backgroundColor = color;
+                confetti.style.left = `${x}px`;
+                confetti.style.top = '-10px';
+                confetti.style.opacity = '1';
+                confetti.style.position = 'fixed'; // Changed to fixed
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.zIndex = '1000'; // Ensure it's above everything
+                
+                // Random rotation
+                const rotation = Math.random() * 360;
+                confetti.style.transform = `rotate(${rotation}deg)`;
+                
+                // Animation
+                confetti.style.transition = `top ${animationDuration}s linear, opacity ${animationDuration}s ease`;
+                
+                document.body.appendChild(confetti);
+                
+                // Start animation
+                setTimeout(() => {
+                    confetti.style.top = `${window.innerHeight + 10}px`;
+                    confetti.style.opacity = '0';
+                }, 10);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, animationDuration * 1000);
+            }
+        }
+    </script>
+</body>
+</html>
